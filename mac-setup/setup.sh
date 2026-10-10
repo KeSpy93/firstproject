@@ -25,6 +25,8 @@ fi
 say "Homebrew"
 if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo
+  echo "HINWEIS: Die 'Next steps' von Homebrew oben erledigt dieses Skript selbst – bitte nichts kopieren."
 fi
 if [ -x /opt/homebrew/bin/brew ]; then
   BREW=/opt/homebrew/bin/brew      # Apple Silicon
