@@ -1,0 +1,69 @@
+# Brewfile – Entwicklungs-, Grafik- und Game-Dev-Umgebung für macOS
+# Installation:  brew bundle --file=mac-setup/Brewfile
+# Einzelne Zeilen auskommentieren (#), wenn du etwas nicht brauchst.
+
+# ---------- Kommandozeile / Basis ----------
+brew "git"
+brew "git-lfs"            # große Dateien (Game-Assets, 3D-Modelle)
+brew "gh"                 # GitHub CLI
+brew "jq"
+brew "ripgrep"
+brew "fd"
+brew "wget"
+brew "tree"
+brew "mas"                # Mac-App-Store-CLI (für Xcode)
+
+# ---------- Sprachen & Build-Tools ----------
+brew "node"               # wird für die meisten MCP-Server (npx) gebraucht
+brew "pnpm"
+brew "python@3.12"
+brew "uv"                 # Python-Paketmanager, wird für Python-MCP-Server (uvx) gebraucht
+brew "cmake"
+brew "ninja"
+brew "go"
+brew "rust"
+cask "dotnet-sdk"         # C# / .NET (Unity, Godot-C#, Desktop-Apps)
+
+# ---------- App-Entwicklung ----------
+brew "cocoapods"          # iOS-Abhängigkeiten
+brew "watchman"           # React Native
+cask "flutter"
+cask "android-studio"
+mas  "Xcode", id: 497799835
+
+# ---------- Editoren / IDEs ----------
+cask "visual-studio-code"
+cask "jetbrains-toolbox"  # Rider (C#/Unreal/Unity), CLion, PyCharm …
+cask "iterm2"
+# Hinweis: "Visual Studio for Mac" wurde von Microsoft eingestellt.
+# Ersatz: VS Code (+ C# Dev Kit) oder JetBrains Rider.
+
+# ---------- Spieleentwicklung ----------
+cask "epic-games"         # Epic Games Launcher → darüber Unreal Engine installieren
+cask "unity-hub"
+cask "godot"
+
+# ---------- 3D / CAD / Simulation ----------
+cask "blender"
+cask "freecad"
+cask "openscad"
+cask "paraview"           # Visualisierung von Simulationsdaten
+
+# ---------- Grafik & Design ----------
+cask "figma"
+cask "inkscape"
+cask "gimp"
+cask "krita"
+brew "imagemagick"
+brew "ffmpeg"
+
+# ---------- Container, APIs, Browser ----------
+cask "docker-desktop"
+cask "github"             # GitHub Desktop
+cask "postman"
+cask "google-chrome"
+cask "firefox"
+
+# ---------- Claude ----------
+cask "claude"             # Claude Desktop-App
+# Claude Code (CLI) wird von setup.sh über den offiziellen Installer installiert.

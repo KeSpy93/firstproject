@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(fd:*)",
+      "Bash(tree:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pnpm:*)",
+      "Bash(node:*)",
+      "Bash(python3:*)",
+      "Bash(uv:*)",
+      "Bash(uvx:*)",
+      "Bash(pip:*)",
+      "Bash(cmake:*)",
+      "Bash(ninja:*)",
+      "Bash(make:*)",
+      "Bash(cargo:*)",
+      "Bash(go:*)",
+      "Bash(dotnet:*)",
+      "Bash(swift:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(xcrun:*)",
+      "Bash(flutter:*)",
+      "Bash(pod:*)",
+      "Bash(docker:*)",
+      "Bash(brew list:*)",
+      "Bash(brew info:*)",
+      "Bash(ffmpeg:*)",
+      "Bash(magick:*)",
+      "Bash(open:*)",
+      "Bash(/Applications/Blender.app/Contents/MacOS/Blender:*)",
+      "mcp__filesystem",
+      "mcp__memory",
+      "mcp__sequential-thinking",
+      "mcp__context7",
+      "mcp__blender",
+      "mcp__xcodebuild"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(brew install:*)",
+      "Bash(brew uninstall:*)",
+      "Bash(rm:*)",
+      "Bash(sudo:*)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.claude/secrets.env)",
+      "Read(**/.env)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)"
+    ]
+  }
+}
