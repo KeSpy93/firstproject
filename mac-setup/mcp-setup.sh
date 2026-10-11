@@ -12,6 +12,11 @@ SECRETS="$HOME/.claude/secrets.env"
 
 PROJECTS_DIR="${PROJECTS_DIR:-$HOME/Projects}"
 
+# Ohne eigenen Token den von 'gh auth login' verwenden.
+if [ -z "${GITHUB_PAT:-}" ] && command -v gh >/dev/null 2>&1; then
+  GITHUB_PAT="$(gh auth token 2>/dev/null || true)"
+fi
+
 command -v claude >/dev/null 2>&1 || { echo "Claude Code fehlt – zuerst setup.sh ausführen." >&2; exit 1; }
 command -v npx    >/dev/null 2>&1 || { echo "Node.js fehlt – zuerst setup.sh ausführen." >&2; exit 1; }
 command -v uvx    >/dev/null 2>&1 || { echo "uv fehlt – zuerst setup.sh ausführen." >&2; exit 1; }
@@ -40,7 +45,7 @@ echo "== Entwicklung =="
 if [ -n "${GITHUB_PAT:-}" ]; then
   add github --transport http https://api.githubcopilot.com/mcp/ --header "Authorization: Bearer $GITHUB_PAT"
 else
-  skip github GITHUB_PAT
+  skip github "GitHub-Anmeldung (gh auth login)"
 fi
 add xcodebuild -- npx -y xcodebuildmcp@latest                    # iOS/macOS-Apps bauen & im Simulator testen
 

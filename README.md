@@ -7,6 +7,7 @@ Programmierung, App- und Spieleentwicklung, 3D/CAD, Grafikdesign, Simulation und
 mac-setup/
 ├── Brewfile              # alle Programme (Homebrew)
 ├── weiter.sh             # Installation: prüft, repariert, installiert was fehlt
+├── abschluss.sh          # aufräumen, Fusion entfernen, GitHub + MCP einrichten
 ├── setup.sh              # alter Einstieg, ruft weiter.sh auf
 ├── mcp-setup.sh          # MCP-Server für Claude Code einrichten
 ├── secrets.env.example   # Vorlage für API-Tokens (landet in ~/.claude/, nie im Repo)
@@ -27,6 +28,16 @@ curl -fsSL https://raw.githubusercontent.com/KeSpy93/firstproject/claude/macbook
 macOS-Update, halb installierte Programme, doppelte Einträge in `~/.zprofile`) und installiert nur, was fehlt.
 Du kannst es beliebig oft starten – später reicht `bash ~/weiter.sh`.
 Ein Protokoll landet als `mac-setup-protokoll.txt` auf dem Schreibtisch.
+
+### Aufräumen und abschließen
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/KeSpy93/firstproject/claude/macbook-setup-tools-access-h0042c/mac-setup/abschluss.sh -o ~/abschluss.sh && bash ~/abschluss.sh
+```
+
+`abschluss.sh` entfernt Autodesk Fusion vollständig und deinstalliert selten gebrauchte Programme
+(Liste im `Brewfile` unter „Bei Bedarf“). Es sucht doppelte Programme, leert den Homebrew-Zwischenspeicher,
+meldet dich bei GitHub an und richtet die MCP-Server ein.
 
 Danach:
 

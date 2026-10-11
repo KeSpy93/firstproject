@@ -1,8 +1,8 @@
-# Brewfile – Entwicklungs-, Grafik- und Game-Dev-Umgebung für macOS
-# Installation:  brew bundle --file=mac-setup/Brewfile
-# Einzelne Zeilen auskommentieren (#), wenn du etwas nicht brauchst.
+# Brewfile – schlanke Standard-Ausstattung (MacBook Air, wenig Speicher)
+# Wird von weiter.sh benutzt. Alles unter "Bei Bedarf" installiert Claude erst,
+# wenn ein Projekt es braucht:  brew install --cask <name>  bzw.  brew install <name>
 
-# ---------- Kommandozeile / Basis ----------
+# ---------- Kommandozeile / Basis (klein, von Claude ständig benutzt) ----------
 brew "git"
 brew "git-lfs"            # große Dateien (Game-Assets, 3D-Modelle)
 brew "gh"                 # GitHub CLI
@@ -11,59 +11,49 @@ brew "ripgrep"
 brew "fd"
 brew "wget"
 brew "tree"
-brew "mas"                # Mac-App-Store-CLI (für Xcode)
+brew "mas"                # Mac-App-Store-CLI
 
 # ---------- Sprachen & Build-Tools ----------
-brew "node"               # wird für die meisten MCP-Server (npx) gebraucht
+brew "node"               # für die meisten MCP-Server (npx) und Web-/App-Entwicklung
 brew "pnpm"
 brew "python@3.12"
-brew "uv"                 # Python-Paketmanager, wird für Python-MCP-Server (uvx) gebraucht
+brew "uv"                 # Python-Paketmanager, für Python-MCP-Server (uvx)
 brew "cmake"
 brew "ninja"
-brew "go"
-brew "rust"
-cask "dotnet-sdk"         # C# / .NET (Unity, Godot-C#, Desktop-Apps)
-
-# ---------- App-Entwicklung ----------
 brew "cocoapods"          # iOS-Abhängigkeiten
 brew "watchman"           # React Native
-cask "flutter"
-cask "android-studio"
-# Xcode (ca. 15 GB) bitte von Hand aus dem App Store laden – automatisch klappt das oft nicht.
 
-# ---------- Editoren / IDEs ----------
-cask "visual-studio-code"
-cask "jetbrains-toolbox"  # Rider (C#/Unreal/Unity), CLion, PyCharm …
-cask "iterm2"
-# Hinweis: "Visual Studio for Mac" wurde von Microsoft eingestellt.
-# Ersatz: VS Code (+ C# Dev Kit) oder JetBrains Rider.
-
-# ---------- Spieleentwicklung ----------
-cask "epic-games"         # Epic Games Launcher → darüber Unreal Engine installieren
-cask "unity-hub"
-cask "godot"
-
-# ---------- 3D / CAD / Simulation ----------
-cask "blender"
-cask "freecad"
-cask "openscad"
-cask "paraview"           # Visualisierung von Simulationsdaten
-
-# ---------- Grafik & Design ----------
-cask "figma"
-cask "inkscape"
-cask "gimp"
-cask "krita"
+# ---------- Grafik-Werkzeuge für die Kommandozeile ----------
 brew "imagemagick"
 brew "ffmpeg"
 
-# ---------- Container, APIs, Browser ----------
-cask "docker-desktop"
-cask "github"             # GitHub Desktop
-cask "postman"
-cask "google-chrome"
-cask "firefox"
-
-# ---------- Claude ----------
+# ---------- Programme ----------
 cask "claude"             # Claude Desktop-App
-# Claude Code (CLI) wird von setup.sh über den offiziellen Installer installiert.
+cask "visual-studio-code" # Code-Editor
+cask "google-chrome"      # Browser (Web-Apps testen, Playwright)
+cask "blender"            # 3D-Modellierung, Animation, Game-Assets
+cask "figma"              # UI-/Grafikdesign
+cask "gimp"               # Bildbearbeitung
+cask "freecad"            # CAD (Ersatz für Fusion 360)
+cask "godot"              # leichte Game-Engine (~200 MB)
+cask "epic-games"         # Launcher für Unreal Engine (Engine selbst bei Bedarf, am besten auf externer SSD)
+
+# Xcode (ca. 15 GB) von Hand aus dem App Store laden.
+
+# ---------- Bei Bedarf (bewusst NICHT installiert) ----------
+# cask "android-studio"   # Android-Apps          (~3 GB + SDKs)
+# cask "flutter"          # Flutter-Apps          (~2 GB)
+# cask "dotnet-sdk"       # C#/.NET, Unity         (~1 GB)
+# cask "unity-hub"        # Unity                  (+ Editor 5–10 GB)
+# cask "docker-desktop"   # Container              (~2 GB + virtuelle Festplatte)
+# cask "jetbrains-toolbox"# Rider, PyCharm …
+# cask "paraview"         # Simulationsdaten visualisieren
+# cask "inkscape"         # Vektorgrafik
+# cask "krita"            # digitales Malen
+# cask "postman"          # API-Tests
+# cask "iterm2"           # zweites Terminal (macOS-Terminal reicht)
+# cask "firefox"          # zweiter Browser
+# cask "github"           # GitHub Desktop (Claude erledigt Git selbst)
+# brew "go"
+# brew "rust"
+# OpenSCAD: Homebrew-Paket wurde 2026 gesperrt → bei Bedarf von openscad.org laden.
