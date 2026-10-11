@@ -6,7 +6,8 @@ Programmierung, App- und Spieleentwicklung, 3D/CAD, Grafikdesign, Simulation und
 ```
 mac-setup/
 ├── Brewfile              # alle Programme (Homebrew)
-├── setup.sh              # Grundinstallation + Claude Code + globale Konfiguration
+├── weiter.sh             # Installation: prüft, repariert, installiert was fehlt
+├── setup.sh              # alter Einstieg, ruft weiter.sh auf
 ├── mcp-setup.sh          # MCP-Server für Claude Code einrichten
 ├── secrets.env.example   # Vorlage für API-Tokens (landet in ~/.claude/, nie im Repo)
 └── claude/
@@ -14,22 +15,18 @@ mac-setup/
     └── CLAUDE.md         # globale Anweisungen für Claude  → ~/.claude/CLAUDE.md
 ```
 
-## 1. Repo auf den Mac holen
+## 1. + 2. Installation (auch zum Weitermachen nach Abbruch oder Update)
+
+Terminal öffnen und diese **eine Zeile** einfügen:
 
 ```bash
-git clone https://github.com/KeSpy93/firstproject.git ~/Projects/firstproject
-cd ~/Projects/firstproject
+curl -fsSL https://raw.githubusercontent.com/KeSpy93/firstproject/claude/macbook-setup-tools-access-h0042c/mac-setup/weiter.sh -o ~/weiter.sh && bash ~/weiter.sh
 ```
 
-## 2. Grundinstallation
-
-```bash
-bash mac-setup/setup.sh
-```
-
-Das Skript installiert die Xcode Command Line Tools, Homebrew, alle Programme aus dem `Brewfile` und Claude Code.
-Außerdem legt es `~/.claude/settings.json` und `~/.claude/CLAUDE.md` an.
-Programme, die du nicht brauchst, kommentierst du vorher im `Brewfile` mit `#` aus.
+`weiter.sh` prüft, was schon da ist, repariert typische Schäden (z. B. kaputte Entwicklerwerkzeuge nach einem
+macOS-Update, halb installierte Programme, doppelte Einträge in `~/.zprofile`) und installiert nur, was fehlt.
+Du kannst es beliebig oft starten – später reicht `bash ~/weiter.sh`.
+Ein Protokoll landet als `mac-setup-protokoll.txt` auf dem Schreibtisch.
 
 Danach:
 
@@ -40,13 +37,13 @@ gh auth login   # GitHub anmelden
 
 **Manuell zu installieren:**
 - **Unreal Engine:** Epic Games Launcher öffnen → *Unreal Engine* → *Bibliothek* → Engine-Version hinzufügen (ca. 50–100 GB).
-- **Xcode:** wird über `mas` installiert, wenn du im App Store angemeldet bist; sonst direkt aus dem App Store laden.
+- **Xcode:** App Store öffnen → „Xcode“ suchen → „Laden“.
   Danach einmal öffnen und die Lizenz bestätigen (`sudo xcodebuild -license accept`).
 
 ## 3. Tokens hinterlegen
 
 ```bash
-cp mac-setup/secrets.env.example ~/.claude/secrets.env
+cp ~/mac-setup/secrets.env.example ~/.claude/secrets.env
 chmod 600 ~/.claude/secrets.env
 open -e ~/.claude/secrets.env   # GITHUB_PAT eintragen
 ```
@@ -54,7 +51,7 @@ open -e ~/.claude/secrets.env   # GITHUB_PAT eintragen
 ## 4. MCP-Server einrichten
 
 ```bash
-bash mac-setup/mcp-setup.sh
+bash ~/mac-setup/mcp-setup.sh
 ```
 
 | Server | Wofür | Voraussetzung |

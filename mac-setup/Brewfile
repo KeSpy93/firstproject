@@ -29,7 +29,7 @@ brew "cocoapods"          # iOS-Abhängigkeiten
 brew "watchman"           # React Native
 cask "flutter"
 cask "android-studio"
-mas  "Xcode", id: 497799835
+# Xcode (ca. 15 GB) bitte von Hand aus dem App Store laden – automatisch klappt das oft nicht.
 
 # ---------- Editoren / IDEs ----------
 cask "visual-studio-code"
