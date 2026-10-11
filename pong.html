@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Pong</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #222; }
+  body { display: flex; align-items: center; justify-content: center; font-family: monospace; }
+  #wrap { position: relative; }
+  canvas {
+    display: block;
+    width: 640px; height: 480px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  button {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font: bold 20px monospace; padding: 8px 20px;
+    background: #000; color: #fff; border: 4px solid #fff; cursor: pointer;
+  }
+  button:hover { background: #fff; color: #000; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c" width="160" height="120"></canvas>
+  <button id="start">START</button>
+</div>
+<script>
+// Logische Auflösung 160x120, hochskaliert -> grobe Pixel wie beim Gameboy.
+const W = 160, H = 120;
+const WALL = 3, PW = 2, PH = 14, BALL = 2;
+const PADDLE_SPEED = 1.6, CPU_SPEED = 1.1, BALL_SPEED = 1.4;
+
+const ctx = document.getElementById('c').getContext('2d');
+const startBtn = document.getElementById('start');
+
+const keys = {};
+addEventListener('keydown', e => { keys[e.key] = true; if (e.key.startsWith('Arrow')) e.preventDefault(); });
+addEventListener('keyup', e => { keys[e.key] = false; });
+
+let left, right, ball, score, running = false;
+
+function reset() {
+  left  = { x: 8,          y: H / 2 - PH / 2 };
+  right = { x: W - 8 - PW, y: H / 2 - PH / 2 };
+  score = [0, 0];
+  serve(Math.random() < 0.5 ? -1 : 1);
+}
+
+// Neuer Ball aus der Mitte, in Richtung dir (-1 = links, 1 = rechts).
+function serve(dir) {
+  const angle = (Math.random() - 0.5) * 0.8;
+  ball = {
+    x: W / 2 - BALL / 2, y: H / 2 - BALL / 2,
+    vx: dir * BALL_SPEED * Math.cos(angle),
+    vy: BALL_SPEED * Math.sin(angle),
+    wait: 40 // kurze Pause vor dem Anstoß
+  };
+}
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function update() {
+  // Spieler (links): W/S oder Pfeiltasten
+  if (keys['w'] || keys['W'] || keys['ArrowUp'])   left.y -= PADDLE_SPEED;
+  if (keys['s'] || keys['S'] || keys['ArrowDown']) left.y += PADDLE_SPEED;
+  left.y = clamp(left.y, WALL, H - WALL - PH);
+
+  // Computer (rechts) folgt dem Ball
+  const target = ball.y + BALL / 2 - PH / 2;
+  right.y += clamp(target - right.y, -CPU_SPEED, CPU_SPEED);
+  right.y = clamp(right.y, WALL, H - WALL - PH);
+
+  if (ball.wait > 0) { ball.wait--; return; }
+
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+
+  // Banden oben/unten
+  if (ball.y < WALL)             { ball.y = WALL;             ball.vy = -ball.vy; }
+  if (ball.y > H - WALL - BALL)  { ball.y = H - WALL - BALL;  ball.vy = -ball.vy; }
+
+  // Schläger
+  for (const p of [left, right]) {
+    if (ball.x < p.x + PW && ball.x + BALL > p.x &&
+        ball.y < p.y + PH && ball.y + BALL > p.y) {
+      const dir = p === left ? 1 : -1;
+      const hit = (ball.y + BALL / 2 - (p.y + PH / 2)) / (PH / 2); // -1..1
+      const speed = Math.min(Math.hypot(ball.vx, ball.vy) * 1.05, 3);
+      const angle = hit * 0.9;
+      ball.vx = dir * speed * Math.cos(angle);
+      ball.vy = speed * Math.sin(angle);
+      ball.x = p === left ? p.x + PW : p.x - BALL;
+    }
+  }
+
+  // Ball verloren -> Punkt für den Gegner, neuer Ball Richtung Gewinner
+  if (ball.x + BALL < 0) { score[1]++; serve(1); }
+  if (ball.x > W)        { score[0]++; serve(-1); }
+}
+
+// Mini-Pixelschrift 3x5 für Ziffern
+const DIGITS = [
+  '111101101101111', '010110010010111', '111001111100111', '111001111001111', '101101111001001',
+  '111100111001111', '111100111101111', '111001001001001', '111101111101111', '111101111001111'
+];
+function drawNumber(n, x, y) {
+  for (const ch of String(n)) {
+    const bits = DIGITS[+ch];
+    for (let i = 0; i < 15; i++) if (bits[i] === '1') ctx.fillRect(x + i % 3, y + (i / 3 | 0), 1, 1);
+    x += 4;
+  }
+}
+
+function draw() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#fff';
+
+  ctx.fillRect(0, 0, W, WALL);           // Bande oben
+  ctx.fillRect(0, H - WALL, W, WALL);    // Bande unten
+  for (let y = WALL + 1; y < H - WALL; y += 4) ctx.fillRect(W / 2 - 1, y, 2, 2); // Mittellinie
+
+  ctx.fillRect(left.x,  Math.round(left.y),  PW, PH);
+  ctx.fillRect(right.x, Math.round(right.y), PW, PH);
+  if (running) ctx.fillRect(Math.round(ball.x), Math.round(ball.y), BALL, BALL);
+
+  // Punktestand klein in der Ecke
+  const sx = W - 34, sy = H - WALL - 7, colon = sx + 4 * String(score[0]).length;
+  drawNumber(score[0], sx, sy);
+  ctx.fillRect(colon, sy + 1, 1, 1);
+  ctx.fillRect(colon, sy + 3, 1, 1);
+  drawNumber(score[1], colon + 2, sy);
+}
+
+function loop() {
+  if (running) update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+startBtn.onclick = () => {
+  reset();
+  running = true;
+  startBtn.style.display = 'none';
+};
+
+reset();
+loop();
+</script>
+</body>
+</html>
